@@ -2,10 +2,7 @@
   "name": "notion-tasks-api",
   "version": "1.0.0",
   "description": "API for Notion task management",
-  "main": "api/index.js",
-  "scripts": {
-    "start": "node api/index.js"
-  },
+  "type": "module",
   "dependencies": {
     "@notionhq/client": "^2.2.14",
     "express": "^4.18.2",
