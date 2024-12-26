@@ -1,7 +1,7 @@
 {
   "name": "notion-tasks-api",
   "version": "1.0.0",
-  "description": "API for Notion task management",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@notionhq/client": "^2.2.14",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "next": "^14.0.0"
+    "next": "14.0.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
