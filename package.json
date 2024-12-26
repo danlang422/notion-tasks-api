@@ -2,10 +2,10 @@
   "name": "notion-tasks-api",
   "version": "1.0.0",
   "description": "API for Notion task management",
-  "type": "module",
   "dependencies": {
     "@notionhq/client": "^2.2.14",
-    "express": "^4.18.2",
-    "dotenv": "^16.3.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^14.0.0"
   }
 }
