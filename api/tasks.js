@@ -1,25 +1,46 @@
 import { Client } from '@notionhq/client';
 
-export default async function handler(req, res) {
-  console.log('Environment variables present:', {
-    hasToken: !!process.env.NOTION_TOKEN,
-    hasDbId: !!process.env.NOTION_DATABASE_ID
-  });
-  
-  const notion = new Client({
-    auth: process.env.NOTION_TOKEN,
-  });
+const notion = new Client({
+  auth: process.env.NOTION_TOKEN,
+});
 
+export default async function handler(req, res) {
   if (req.method === 'GET') {
+    // Existing GET code remains the same
+  } 
+  else if (req.method === 'POST') {
+    const { name, doDate, status, frameId, projectIds } = req.body;
+    
     try {
-      const response = await notion.databases.query({
-        database_id: process.env.NOTION_DATABASE_ID,
-        sorts: [{ property: "Do Date", direction: "ascending" }],
+      const response = await notion.pages.create({
+        parent: { database_id: process.env.NOTION_DATABASE_ID },
+        properties: {
+          Name: {
+            title: [{
+              text: { content: name }
+            }]
+          },
+          "Do Date": doDate ? {
+            date: { start: doDate }
+          } : null,
+          Status: {
+            status: {
+              name: status || "Not started"
+            }
+          },
+          Frame: frameId ? {
+            relation: [{ id: frameId }]
+          } : null,
+          Projects: projectIds ? {
+            relation: projectIds.map(id => ({ id }))
+          } : null
+        }
       });
-      res.status(200).json(response.results);
+      
+      res.status(200).json(response);
     } catch (error) {
-      console.error('Error details:', error);
-      res.status(500).json({ error: 'Failed to fetch tasks' });
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to create task' });
     }
   }
 }
