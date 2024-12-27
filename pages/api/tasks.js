@@ -28,6 +28,12 @@ async function getRelationId(databaseId, name) {
 }
 
 async function createTask(taskData) {
+  console.log('Starting createTask');
+  console.log('Environment variables present:', {
+    hasTasksDb: !!process.env.NOTION_TASKS_DB_ID,
+    hasToken: !!process.env.NOTION_TOKEN
+  });
+  
   console.log('Creating task with data:', taskData);
 
   const { name, doDate, status, frame, areas, timeframe, project } = taskData;
