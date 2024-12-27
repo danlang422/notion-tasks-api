@@ -1,3 +1,4 @@
+// pages/api/tasks.js
 import { Client } from '@notionhq/client';
 
 const notion = new Client({
@@ -18,7 +19,8 @@ export default async function handler(req, res) {
   } 
   else if (req.method === 'POST') {
     try {
-      const { name, doDate } = req.body;
+      const { name, doDate, status, frameId, areaIds, timeframe, projectIds } = req.body;
+      
       const response = await notion.pages.create({
         parent: { database_id: process.env.NOTION_DATABASE_ID },
         properties: {
@@ -29,12 +31,26 @@ export default async function handler(req, res) {
             date: { start: doDate }
           } : null,
           Status: {
-            status: { name: "Not started" }
-          }
+            status: { name: status || "Not started" }
+          },
+          Frame: frameId ? {
+            relation: [{ id: frameId }]
+          } : null,
+          Areas: areaIds ? {
+            relation: areaIds.map(id => ({ id }))
+          } : null,
+          Timeframe: timeframe ? {
+            select: { name: timeframe }
+          } : null,
+          Projects: projectIds ? {
+            relation: projectIds.map(id => ({ id }))
+          } : null
         }
       });
+      
       res.status(200).json(response);
     } catch (error) {
+      console.error('Error:', error);
       res.status(500).json({ error: 'Failed to create task' });
     }
   }
