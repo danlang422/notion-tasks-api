@@ -1,3 +1,21 @@
+// pages/api/tasks.js - Add at the top
+async function getFrames() {
+  const response = await notion.databases.query({
+    database_id: process.env.NOTION_FRAMES_DB_ID
+  });
+  return response.results;
+}
+
+async function getAreas() {
+  const response = await notion.databases.query({
+    database_id: process.env.NOTION_AREAS_DB_ID
+  });
+  return response.results;
+}
+
+export default async function handler(req, res) {
+  // Existing code remains the same
+}
 // pages/api/tasks.js
 import { Client } from '@notionhq/client';
 
