@@ -26,7 +26,7 @@ async function createTask(taskData) {
   });
 }
 
-export default async function handler(req, res) {
+export const tasksHandler = async (req, res) => {
   try {
     if (req.method === 'GET') {
       const response = await getTasks();
@@ -38,4 +38,6 @@ export default async function handler(req, res) {
   } catch (error) {
     res.status(500).json({ error: `Failed to ${req.method === 'GET' ? 'fetch' : 'create'} task` });
   }
-}
+};
+
+export default tasksHandler;
