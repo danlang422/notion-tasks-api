@@ -81,11 +81,14 @@ async function getTasks() {
 }
 
 export const tasksHandler = async (req, res) => {
+  console.log('Handler started, method:', req.method);
   try {
     if (req.method === 'GET') {
+      console.log('Processing GET request');
       const response = await getTasks();
       res.status(200).json(response.results);
     } else if (req.method === 'POST') {
+      console.log('Processing POST request');
       const response = await createTask(req.body);
       res.status(200).json(response);
     }
@@ -93,6 +96,7 @@ export const tasksHandler = async (req, res) => {
     console.error('Handler error:', error);
     res.status(500).json({ error: error.message });
   }
+  console.log('Handler completed');
 };
 
 export default tasksHandler;
