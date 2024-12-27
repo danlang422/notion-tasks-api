@@ -1,5 +1,7 @@
 import { Client } from '@notionhq/client';
 
+console.log('API Route file loaded'); 
+
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
 async function findByName(databaseId, name) {
