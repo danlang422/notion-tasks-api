@@ -1,3 +1,4 @@
+// pages/api/tasks.js
 import { Client } from '@notionhq/client';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
@@ -52,6 +53,17 @@ async function createTask(taskData) {
 }
 
 export default async function handler(req, res) {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   try {
     if (req.method === 'POST') {
       console.log('Processing POST request:', req.body);
@@ -64,7 +76,7 @@ export default async function handler(req, res) {
       });
       res.status(200).json(response.results);
     } else {
-      res.setHeader('Allow', ['GET', 'POST']);
+      res.setHeader('Allow', ['GET', 'POST', 'OPTIONS']);
       res.status(405).json({ error: `Method ${req.method} Not Allowed` });
     }
   } catch (error) {
