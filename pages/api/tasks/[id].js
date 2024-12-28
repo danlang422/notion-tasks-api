@@ -6,6 +6,17 @@ const notion = new Client({
 });
 
 export default async function handler(req, res) {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   const { id } = req.query;
 
   if (req.method === 'PATCH') {
@@ -41,7 +52,7 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Failed to update task' });
     }
   } else {
-    res.setHeader('Allow', ['PATCH']);
+    res.setHeader('Allow', ['PATCH', 'OPTIONS']);
     res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
 }
